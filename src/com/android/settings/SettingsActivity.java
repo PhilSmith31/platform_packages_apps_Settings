@@ -236,7 +236,7 @@ public class SettingsActivity extends SettingsDrawerActivity
     private static final int REQUEST_SUGGESTION = 42;
 
     private static final String ACTION_TIMER_SWITCH = "qualcomm.intent.action.TIMER_SWITCH";
-
+/*
     private static final String STWEAKS_FRAGMENT = "com.android.settings.STweaks";
 
     private static final String MAGISK_FRAGMENT = "com.android.settings.MagiskManager";
@@ -246,7 +246,7 @@ public class SettingsActivity extends SettingsDrawerActivity
     private static final String SUPERUSER_FRAGMENT = "com.android.settings.SuperUser";
 
     private static final String SUBSTRATUM_FRAGMENT = "com.android.settings.Substratum";
-
+*/
     private static final String TOOLBOX_FRAGMENT = "com.android.settings.Toolbox";
 
     private String mFragmentClass;
@@ -1062,41 +1062,6 @@ public class SettingsActivity extends SettingsDrawerActivity
     private Fragment switchToFragment(String fragmentName, Bundle args, boolean validate,
             boolean addToBackStack, int titleResId, CharSequence title, boolean withTransition) {
 
-        if (STWEAKS_FRAGMENT.equals(fragmentName)) {
-            Intent stweaksIntent = new Intent();
-            stweaksIntent.setClassName("com.gokhanmoral.stweaks.app", "com.gokhanmoral.stweaks.app.MainActivity");
-            startActivity(stweaksIntent);
-            finish();
-            return null;
-        }
-        if (MAGISK_FRAGMENT.equals(fragmentName)) {
-            Intent magiskIntent = new Intent();
-            magiskIntent.setClassName("com.topjohnwu.magisk", "com.topjohnwu.magisk.SplashActivity");
-            startActivity(magiskIntent);
-            finish();
-            return null;
-        }
-        if (SUPERSU_FRAGMENT.equals(fragmentName)) {
-            Intent superSUIntent = new Intent();
-            superSUIntent.setClassName("eu.chainfire.supersu", "eu.chainfire.supersu.MainActivity");
-            startActivity(superSUIntent);
-            finish();
-            return null;
-        }
-        if (SUPERUSER_FRAGMENT.equals(fragmentName)) {
-            Intent superuserIntent = new Intent();
-            superuserIntent.setClassName("me.phh.superuser", "com.koushikdutta.superuser.MainActivity");
-            startActivity(superuserIntent);
-            finish();
-            return null;
-        }
-        if (SUBSTRATUM_FRAGMENT.equals(fragmentName)) {
-            Intent subIntent = new Intent();
-            subIntent.setClassName("projekt.substratum", "projekt.substratum.LaunchActivity");
-            startActivity(subIntent);
-            finish();
-            return null;
-        }
         if (TOOLBOX_FRAGMENT.equals(fragmentName)) {
             Intent subIntent = new Intent();
             subIntent.setClassName("com.jdcteam.toolbox", "com.jdcteam.toolbox.ToolboxMain");
@@ -1197,46 +1162,6 @@ public class SettingsActivity extends SettingsDrawerActivity
                         Settings.DevelopmentSettingsActivity.class.getName()),
                 showDev, isAdmin, pm);
 
-        // STweaks
-        boolean stweaksSupported = false;
-        try {
-            stweaksSupported = (getPackageManager().getPackageInfo("com.gokhanmoral.stweaks.app", 0).versionCode > 0);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName,
-                        Settings.STweaksActivity.class.getName()),
-                stweaksSupported, isAdmin, pm);
-
-        // Magisk Manager
-        boolean magiskSupported = false;
-        try {
-            magiskSupported = (getPackageManager().getPackageInfo("com.topjohnwu.magisk", 0).versionCode > 0);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName,
-                        Settings.MagiskActivity.class.getName()),
-                magiskSupported, isAdmin, pm);
-
-        // Substratum
-        boolean subSupported = false;
-        try {
-            subSupported = (getPackageManager().getPackageInfo("projekt.substratum", 0).versionCode > 0);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName,
-                        Settings.SubstratumActivity.class.getName()),
-                subSupported, isAdmin, pm);
-
-        // SuperSU
-        boolean suSupported = false;
-        try {
-            suSupported = (getPackageManager().getPackageInfo("eu.chainfire.supersu", 0).versionCode >= 185);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName,
-                        Settings.SuperSUActivity.class.getName()),
-                suSupported, isAdmin, pm);
-
         // Toolbox
         boolean toolboxSupported = false;
         try {
@@ -1246,19 +1171,6 @@ public class SettingsActivity extends SettingsDrawerActivity
         setTileEnabled(new ComponentName(packageName,
                         Settings.ToolboxActivity.class.getName()),
                 toolboxSupported, isAdmin, pm);
-
-        // SuperUser
-        boolean phhSupported = false;
-        try {
-            phhSupported = (getPackageManager().getPackageInfo("me.phh.superuser", 0).versionCode > 0);
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        setTileEnabled(new ComponentName(packageName,
-                        Settings.SuperUserActivity.class.getName()),
-                phhSupported, isAdmin, pm);
-
-        // Reveal development-only quick settings tiles
-        DevelopmentTiles.setTilesEnabled(this, showDev);
 
         // Show scheduled power on and off if support
         boolean showTimerSwitch = false;

@@ -164,12 +164,7 @@ public class Settings extends SettingsActivity {
 
     // JDCTeam Additions.
     public static class ExpandedDesktopSettingsActivity extends SettingsActivity { /* empty */ }
-    public static class SubstratumActivity extends SettingsActivity { /* empty */ }
-    public static class SuperSUActivity extends SettingsActivity { /* empty */ }
-    public static class STweaksActivity extends SettingsActivity { /* empty */ }
     public static class ToolboxActivity extends SettingsActivity { /* empty */ }
-    public static class SuperUserActivity extends SettingsActivity { /* empty */ }
-    public static class MagiskActivity extends SettingsActivity { /* empty */ }
     public static class BatterySettingsActivity extends SettingsActivity { /* empty */ }
     public static class LightsSettingsActivity extends SettingsActivity { /* empty */ }
 }
