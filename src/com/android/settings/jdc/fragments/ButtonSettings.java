@@ -40,8 +40,8 @@ import android.view.WindowManagerGlobal;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
-import com.android.settings.Utils;
 import com.android.settings.cyanogenmod.ButtonBacklightBrightness;
+import com.android.settings.jdc.utils.Utils;
 
 public class ButtonSettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
@@ -56,6 +56,8 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
     private static final String KEY_ASSIST_LONG_PRESS = "hardware_keys_assist_long_press";
     private static final String KEY_APP_SWITCH_PRESS = "hardware_keys_app_switch_press";
     private static final String KEY_APP_SWITCH_LONG_PRESS = "hardware_keys_app_switch_long_press";
+    private static final String KEY_TORCH_LONG_PRESS_POWER_GESTURE = "torch_long_press_power_gesture";
+    private static final String KEY_TORCH_LONG_PRESS_POWER_TIMEOUT = "torch_long_press_power_timeout";
 
     private static final String CATEGORY_POWER = "power_key";
     private static final String CATEGORY_HOME = "home_key";
@@ -98,6 +100,8 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
     private ListPreference mMenuLongPressAction;
     private ListPreference mAppSwitchPressAction;
     private ListPreference mAppSwitchLongPressAction;
+    private SwitchPreference mTorchLongPressPowerGesture;
+    private ListPreference mTorchLongPressPowerTimeout;
 
     private PreferenceCategory mNavigationPreferencesCat;
 
@@ -123,12 +127,19 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
         final boolean hasAppSwitchKey = (deviceKeys & KEY_MASK_APP_SWITCH) != 0;
 
         boolean hasAnyBindableKey = false;
+        final PreferenceCategory powerCategory =
+                (PreferenceCategory) prefScreen.findPreference(CATEGORY_POWER);
         final PreferenceCategory homeCategory =
                 (PreferenceCategory) prefScreen.findPreference(CATEGORY_HOME);
         final PreferenceCategory menuCategory =
                 (PreferenceCategory) prefScreen.findPreference(CATEGORY_MENU);
         final PreferenceCategory appSwitchCategory =
                 (PreferenceCategory) prefScreen.findPreference(CATEGORY_APPSWITCH);
+
+        // Long press power while display is off to activate torchlight
+        mTorchLongPressPowerGesture = (SwitchPreference) findPreference(KEY_TORCH_LONG_PRESS_POWER_GESTURE);
+        final int torchLongPressPowerTimeout = Settings.System.getInt(resolver, Settings.System.TORCH_LONG_PRESS_POWER_TIMEOUT, 0);
+        mTorchLongPressPowerTimeout = initActionList(KEY_TORCH_LONG_PRESS_POWER_TIMEOUT, torchLongPressPowerTimeout);
 
         mHandler = new Handler();
 
@@ -190,6 +201,15 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
         } else {
             prefScreen.removePreference(appSwitchCategory);
         }
+
+        if (hasPowerKey) {
+            if (!Utils.deviceSupportsFlashLight(getActivity())) {
+                powerCategory.removePreference(mTorchLongPressPowerGesture);
+                powerCategory.removePreference(mTorchLongPressPowerTimeout);
+            }
+        } else {
+            prefScreen.removePreference(powerCategory);
+        }
     }
 
     private ListPreference initActionList(String key, int value) {
@@ -239,8 +259,15 @@ public class ButtonSettings extends SettingsPreferenceFragment implements
             handleActionListChange(mAppSwitchLongPressAction, newValue,
                     Settings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION);
             return true;
+        } else if (preference == mTorchLongPressPowerGesture) {
+            handleActionListChange(mTorchLongPressPowerGesture, newValue,
+                    Settings.System.KEY_TORCH_LONG_PRESS_POWER_GESTURE_ACTION);
+            return true;
+        } else if (preference == mTorchLongPressPowerTimeout) {
+            handleActionListChange(mTorchLongPressPowerTimeout, newValue,
+                    Settings.System.KEY_TORCH_LONG_PRESS_POWER_TIMEOUT_ACTION);
+            return true;
         }
         return false;
     }
-
 }

@@ -112,6 +112,13 @@
     <string name="hardware_keys_action_split_screen">Split screen</string>
     <string name="hardware_keys_action_single_handed_left">Single hand mode (left)</string>
     <string name="hardware_keys_action_single_handed_right">Single hand mode (right)</string>
+    <string name="hardware_keys_power_key_title">Power Button</string>
+
+    <!-- Torch Power Key -->
+    <string name="torch_long_press_power_gesture_title">Long-press power button for torch</string>
+    <string name="torch_long_press_power_gesture_desc">Activate the torch by long-pressing the power button while the display is off</string>
+    <string name="torch_long_press_power_timeout_title">Automatically turn torch off</string>
+    <string name="auto_power_save_never">Never</string>
 
     <!-- Phone info shortcut -->
     <string name="device_info_title">Phone info</string>
